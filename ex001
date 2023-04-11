@@ -1,0 +1,62 @@
+package ex001;
+
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.util.Random;
+
+public class Ex001 {
+
+    public static void main(String[] args) {
+        System.out.printf("Digite a quantidade de números: \n");
+        Scanner teclado = new Scanner(System.in);
+        int n = teclado.nextInt();
+        int nums[] = criarArquivo(n);
+        calcularHistograma(nums);
+    }
+    
+    public static int[] criarArquivo(int num) {
+        Random rd = new Random();
+        int vetor[] = new int[num];
+        
+        for (int i=0;i<num;i++){
+            vetor[i] = rd.nextInt(100);
+        }
+        
+        try {
+            FileWriter array;
+            array = new FileWriter("array.txt");
+            
+            for (int i=0;i<num;i++){
+                array.write(vetor[i]+"\n");
+            }
+            array.close();
+            
+        }catch (Exception e){
+            System.out.println("Erro "+e.getMessage());
+        }
+        
+        return vetor;
+    }
+    
+    public static void calcularHistograma(int[] conjunto){
+        int[] histograma = new int[conjunto.length];
+        int visitado=-1;
+        for (int i=0;i<conjunto.length;i++){
+            int cont=1;
+            for (int j=i+1;j<conjunto.length;j++){
+                if (conjunto[i]==conjunto[j]){
+                    cont++;
+                    histograma[j]=visitado;
+                }
+                if (histograma[i]!=visitado){
+                    histograma[i]=cont;
+                }
+            }    
+        }
+        for (int i=0;i<histograma.length;i++){
+            if(histograma[i]!=visitado){
+                System.out.println(conjunto[i]+"   |  "+histograma[i]);
+            }
+        }
+    }
+}
